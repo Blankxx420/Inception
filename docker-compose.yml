@@ -1,0 +1,26 @@
+# [Containers]
+services:
+  mariadb:
+    container_name: mariadb
+    build: srcs/Mariadb
+    restart: on-failure
+    env_file:
+      - ./.env
+    volumes:
+      - mariadb:/var/lib/mysql
+  nginx:
+    container_name: nginx
+    build: srcs/nginx
+    env_file:
+      - ./.env
+
+# [volumes]
+volumes:
+  mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/brguicho/data
+      o: bind
+
+  
