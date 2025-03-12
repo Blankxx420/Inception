@@ -9,10 +9,19 @@ services:
     volumes:
       - mariadb:/var/lib/mysql
   nginx:
-    container_name: nginx
     build: srcs/nginx
+    container_name: nginx
     env_file:
       - ./.env
+    restart: always
+    networks:
+      - nginx_network
+    ports:
+      - "443:443"
+      - "9000:9000"
+networks:
+  nginx_network:
+    driver: bridge
 
 # [volumes]
 volumes:
