@@ -15,14 +15,28 @@ services:
     container_name: nginx
     env_file:
       - ./.env
-    restart: always
+    restart: on-failure
     networks:
       - inception_network
     ports:
       - "443:443"
       - "9000:9000"
+  wordpress:
+    depends_on:
+      - mariadb
+    build: srcs/wordpress
+    container_name: wordpress
+    env_file:
+      - ./.env
+    restart: on-failure
+    networks:
+      - inception_network
+    ports:
+      - "9000:9000"
+      - "3306:3306"
+
 networks:
-  inception__network:
+  inception_network:
     driver: bridge
 
 # [volumes]
@@ -33,5 +47,10 @@ volumes:
       type: none
       device: /home/brguicho/data
       o: bind
-
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/brguicho/data
+      o: bind
   

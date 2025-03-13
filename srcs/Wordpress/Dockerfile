@@ -13,4 +13,6 @@ COPY /tools/wordpress_setup.sh /script/wordpress_setup.sh
 
 RUN chmod +x /script/wordpress_setup.sh
 
+EXPOSE 3306 9000
+
 CMD [ "./script/wordpress_setup.sh" ]
