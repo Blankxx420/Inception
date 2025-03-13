@@ -4,6 +4,8 @@ services:
     container_name: mariadb
     build: srcs/Mariadb
     restart: on-failure
+    networks:
+      - inception_network
     env_file:
       - ./.env
     volumes:
@@ -15,12 +17,12 @@ services:
       - ./.env
     restart: always
     networks:
-      - nginx_network
+      - inception_network
     ports:
       - "443:443"
       - "9000:9000"
 networks:
-  nginx_network:
+  inception__network:
     driver: bridge
 
 # [volumes]
