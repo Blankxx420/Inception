@@ -1,4 +1,4 @@
-FROM debian:oldstable
+FROM debian:bullseye
 
 RUN apt-get update \
     && apt-get install -y mariadb-server
@@ -11,4 +11,4 @@ RUN chmod +x /script/create_database.sh
 
 EXPOSE 3306
 
-CMD ["/script/create_database.sh"]
+CMD ["bash", "/script/create_database.sh"]

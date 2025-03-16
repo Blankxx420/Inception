@@ -11,7 +11,7 @@ services:
     volumes:
       - mariadb:/var/lib/mysql
   nginx:
-    build: srcs/nginx
+    build: srcs/Nginx
     container_name: nginx
     env_file:
       - ./.env
@@ -24,16 +24,15 @@ services:
   wordpress:
     depends_on:
       - mariadb
-    build: srcs/wordpress
+    build: srcs/Wordpress
     container_name: wordpress
     env_file:
       - ./.env
     restart: on-failure
     networks:
       - inception_network
-    ports:
-      - "9000:9000"
-      - "3306:3306"
+    volumes: 
+      - wordpress:/var/www/
 
 networks:
   inception_network:
@@ -45,12 +44,12 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/brguicho/data
+      device: /home/brguicho/data/
       o: bind
   wordpress:
     driver: local
     driver_opts:
       type: none
-      device: /home/brguicho/data
+      device: /home/brguicho/data/
       o: bind
   
