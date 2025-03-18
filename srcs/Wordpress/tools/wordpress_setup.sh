@@ -1,5 +1,9 @@
 #!/bin/bash
 
+service php7.4-fpm start
+
+mkdir -p /var/www/html
+
 # Ensure WordPress is downloaded first
 if [ -z "$( ls -A '/var/www/html/' )" ]; then
     wp core download --path="/var/www/html/" --allow-root
@@ -26,3 +30,5 @@ if [ ! -f /var/www/html/wp-config.php ]; then
     --locale fr_FR \
     --skip-email
 fi
+
+/usr/sbin/php-fpm7.4 -F

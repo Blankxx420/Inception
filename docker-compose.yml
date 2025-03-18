@@ -17,6 +17,9 @@ services:
     volumes:
       - mariadb:/var/lib/mysql
   nginx:
+    depends_on:
+      mariadb:
+        condition: service_healthy
     build: srcs/Nginx
     container_name: nginx
     env_file:
@@ -26,7 +29,6 @@ services:
       - inception_network
     ports:
       - "443:443"
-      - "9000:9000"
   wordpress:
     depends_on:
       mariadb:
@@ -36,6 +38,12 @@ services:
     env_file:
       - ./.env
     restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000", "||", "exit", "1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
     networks:
       - inception_network
     volumes: 
