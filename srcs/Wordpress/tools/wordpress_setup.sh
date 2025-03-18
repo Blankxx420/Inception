@@ -1,16 +1,14 @@
 #!/bin/bash
 
-sleep 10
-
 # Ensure WordPress is downloaded first
-wp core download --path="/var/www/html/" --allow-root
-
+if [ -z "$( ls -A '/var/www/html/' )" ]; then
+    wp core download --path="/var/www/html/" --allow-root
+fi
 
 # Check if wp-config.php does not exist
 if [ ! -f /var/www/html/wp-config.php ]; then
     wp config create \
         --allow-root \
-		--force \
         --dbname=$DB_NAME \
         --dbuser=$DB_USER \
         --dbpass=$DB_PASS \
