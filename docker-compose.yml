@@ -19,7 +19,7 @@ services:
   nginx:
     depends_on:
       wordpress:
-        condition: service_healthy
+        condition: service_started
     build: srcs/Nginx
     container_name: nginx
     env_file:
@@ -27,6 +27,8 @@ services:
     restart: on-failure
     networks:
       - inception_network
+    volumes: 
+      - wordpress:/var/www/html/
     ports:
       - "443:443"
   wordpress:
@@ -38,12 +40,6 @@ services:
     env_file:
       - ./.env
     restart: on-failure
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000", "||", "exit", "1"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 20s
     networks:
       - inception_network
     volumes: 

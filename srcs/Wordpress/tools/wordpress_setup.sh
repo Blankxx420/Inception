@@ -1,6 +1,5 @@
 #!/bin/bash
 
-service php7.4-fpm start
 
 mkdir -p /var/www/html
 

@@ -12,8 +12,6 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 -out /etc/ssl/certs/brguicho.42.fr.crt \ 
 -subj="/C=FR/ST=foo/L=Foo/O=adaad/OU=AD/CN=foo/emailAdrress=13@gmail.com"
 
-RUN openssl dhparam -out /etc/ssl/dhparam.pem 2048
-
 COPY ./conf/server.conf /etc/nginx/sites-available/default
 
 EXPOSE 443
