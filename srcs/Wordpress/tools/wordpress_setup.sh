@@ -2,6 +2,7 @@
 
 
 mkdir -p /var/www/html
+chown -R www-data:www-data /var/www/html
 
 # Ensure WordPress is downloaded first
 if [ -z "$( ls -A '/var/www/html/' )" ]; then

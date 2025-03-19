@@ -15,6 +15,7 @@ RUN sed -i 's/listen = \/run\/php\/php7.4-fpm.sock/listen = 9000/g' /etc/php/7.4
 
 COPY /tools/wordpress_setup.sh /script/wordpress_setup.sh
 
+
 EXPOSE 9000
 
 RUN chmod +x /script/wordpress_setup.sh
