@@ -2,7 +2,7 @@
 services:
   mariadb:
     container_name: mariadb
-    build: srcs/Mariadb
+    build: srcs/requirements/Mariadb
     restart: on-failure
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
@@ -16,11 +16,12 @@ services:
       - ./.env
     volumes:
       - mariadb:/var/lib/mysql
+
   nginx:
     depends_on:
       wordpress:
         condition: service_started
-    build: srcs/Nginx
+    build: srcs/requirements/Nginx
     container_name: nginx
     env_file:
       - ./.env
@@ -31,11 +32,12 @@ services:
       - wordpress:/var/www/html/
     ports:
       - "443:443"
+
   wordpress:
     depends_on:
       mariadb:
         condition: service_healthy
-    build: srcs/Wordpress
+    build: srcs/requirements/Wordpress
     container_name: wordpress
     env_file:
       - ./.env
@@ -44,6 +46,28 @@ services:
       - inception_network
     volumes: 
       - wordpress:/var/www/html/
+
+# [bonus]
+  redis:
+    container_name: redis
+    depends_on:
+      - wordpress
+    build: srcs/requirements/Bonus/Redis
+    ports:
+      - 6379:6379
+    networks:
+      - inception_network
+    restart: on-failure
+
+  # adminer:
+  #   build: srcs/requirements/Bonus/Adminer
+  #   container_name: adminer
+  #   depends_on:
+  #     mariadb:
+  #       condition: service_healthy
+  #   restart: on-failure
+  #   networks:
+  #     - inception_network
 
 networks:
   inception_network:
