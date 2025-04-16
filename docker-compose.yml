@@ -18,9 +18,6 @@ services:
       - mariadb:/var/lib/mysql
 
   nginx:
-    depends_on:
-      wordpress:
-        condition: service_started
     build: srcs/requirements/Nginx
     container_name: nginx
     env_file:
@@ -30,6 +27,7 @@ services:
       - inception_network
     volumes: 
       - wordpress:/var/www/html/
+      - adminer:/usr/share/adminer/
     ports:
       - "443:443"
 
@@ -54,20 +52,22 @@ services:
       - wordpress
     build: srcs/requirements/Bonus/Redis
     ports:
-      - 6379:6379
+      - "6379:6379"
     networks:
       - inception_network
     restart: on-failure
 
-  # adminer:
-  #   build: srcs/requirements/Bonus/Adminer
-  #   container_name: adminer
-  #   depends_on:
-  #     mariadb:
-  #       condition: service_healthy
-  #   restart: on-failure
-  #   networks:
-  #     - inception_network
+  adminer:
+    build: srcs/requirements/Bonus/Adminer
+    container_name: adminer
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    restart: on-failure
+    volumes:
+      - adminer:/usr/share/adminer/
+    networks:
+      - inception_network
 
 networks:
   inception_network:
@@ -86,5 +86,11 @@ volumes:
     driver_opts:
       type: none
       device: /home/brguicho/data/wordpress
+      o: bind
+  adminer:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/brguicho/data/adminer
       o: bind
   
