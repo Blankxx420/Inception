@@ -69,6 +69,13 @@ services:
     networks:
       - inception_network
 
+  static-site:
+    build: srcs/requirements/Bonus/Static_site
+    container_name: static-site
+    restart: on-failure
+    networks:
+      -inception
+
 networks:
   inception_network:
     driver: bridge
