@@ -1,6 +1,6 @@
 FROM debian:bullseye
 
-RUN apt-get update -y && apt-get install wget php php-fpm -y
+RUN apt-get update -y && apt-get install wget php php-fpm php-mysqli -y
 
 RUN mkdir -p /usr/share/adminer
 
