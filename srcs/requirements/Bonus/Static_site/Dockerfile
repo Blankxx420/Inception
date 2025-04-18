@@ -4,7 +4,8 @@ RUN apt-get update -y && apt-get install -y curl
 
 RUN curl -fsSL https://deb.nodesource.com/setup_23.x -o nodesource_setup.sh
 
-RUN ./nodesource_setup.sh
+
+RUN chmod +x nodesource_setup.sh &&./nodesource_setup.sh
 
 RUN apt-get install -y nodejs
 
@@ -16,7 +17,7 @@ RUN npm init -y
 
 RUN npm install express --save
 
-COPY /app.js /var/wwww/static_site/index.js
+COPY /srcs /var/wwww/static_site/
 
 EXPOSE 3000
 

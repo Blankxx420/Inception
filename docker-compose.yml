@@ -28,6 +28,7 @@ services:
     volumes: 
       - wordpress:/var/www/html/
       - adminer:/usr/share/adminer/
+      - static_site:/var/www/static_site/
     ports:
       - "443:443"
 
@@ -69,12 +70,16 @@ services:
     networks:
       - inception_network
 
-  static-site:
+  static_site:
     build: srcs/requirements/Bonus/Static_site
-    container_name: static-site
+    container_name: static_site
     restart: on-failure
     networks:
-      -inception
+      - inception_network
+    ports:
+      - "3000:3000"
+    volumes:
+      - static_site:/var/www/static_site
 
 networks:
   inception_network:
@@ -99,5 +104,11 @@ volumes:
     driver_opts:
       type: none
       device: /home/brguicho/data/adminer
+      o: bind
+  static_site:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/brguicho/data/static_site
       o: bind
   
