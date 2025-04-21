@@ -2,8 +2,9 @@ FROM debian:bullseye
 
 RUN apt-get update -y && apt-get install vsftpd -y
 
-RUN useradd $FTP_USER -p $FTP_PASS
+COPY tools/entrypoint.sh /etc/
+COPY conf/vsftpd.conf /etc/vsftpd/.
 
+RUN chmod +x /etc/entrypoint.sh
 
-
-EXPOSE 21 20
+CMD ["./etc/entrypoint.sh"]

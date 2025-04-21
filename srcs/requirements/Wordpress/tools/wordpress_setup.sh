@@ -28,6 +28,20 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 
     # Install WordPress
     echo "Installing WordPress..."
+    echo "Setting correct file permissions..."
+    chown -R www-data:www-data /var/www/html
+    find /var/www/html -type d -exec chmod 755 {} \;
+    find /var/www/html -type f -exec chmod 644 {} \;
+
+    wp config set WP_DEBUG 'true' --allow-root
+    wp config set FORCE_SSL_ADMIN 'false' --allow-root
+    wp config  set WP_REDIS_HOST 'redis' --allow-root
+    wp config set WP_REDIS_PORT $redis_port --allow-root
+    wp config  set WP_CACHE 'true' --allow-root
+    wp plugin install redis-cache --allow-root
+    wp plugin activate redis-cache --allow-root
+    wp redis enable --allow-root
+        chmod 777 /var/www/html/wp-content
     wp core install \
         --allow-root \
         --path="/var/www/html/" \
@@ -37,20 +51,6 @@ if [ ! -f /var/www/html/wp-config.php ]; then
         --admin_password="$ADMIN_PASSWORD" \
         --admin_email="$ADMIN_EMAIL" \
         --skip-email
-        echo "Setting correct file permissions..."
-        chown -R www-data:www-data /var/www/html
-        find /var/www/html -type d -exec chmod 755 {} \;
-        find /var/www/html -type f -exec chmod 644 {} \;
-
-        wp config set WP_DEBUG 'true' --allow-root
-        wp config set FORCE_SSL_ADMIN 'false' --allow-root
-        wp config  set WP_REDIS_HOST 'redis' --allow-root
-        wp config set WP_REDIS_PORT $redis_port --allow-root
-        wp config  set WP_CACHE 'true' --allow-root
-        wp plugin install redis-cache --allow-root
-        wp plugin activate redis-cache --allow-root
-        wp redis enable --allow-root
-        chmod 777 /var/www/html/wp-content
 else
     echo "wp-config.php already exists. Skipping creation."
 fi
