@@ -80,6 +80,18 @@ services:
       - "3000:3000"
     volumes:
       - static_site:/var/www/static_site
+  
+  Ftp:
+    build: srcs/requirements/Bonus/Ftp
+    container_name: Ftp
+    restart: on-failure
+    networks:
+      - inception_network
+    ports:
+      - 21:21
+    volumes:
+      - wordpress:/var/www/html/
+    
 
 networks:
   inception_network:
@@ -110,5 +122,11 @@ volumes:
     driver_opts:
       type: none
       device: /home/brguicho/data/static_site
+      o: bind
+  ftp:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/brguicho/data/ftp
       o: bind
   
