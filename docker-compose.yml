@@ -92,9 +92,23 @@ services:
       - "5000-5010:5000-5010"
     volumes:
       - wordpress:/var/www/html
-    restart: always
+    restart: on-failure
     env_file:
       - ./.env
+
+  cadvisor:
+    container_name: cadvisor
+    build: srcs/requirements/Bonus/Cadvisor/
+    ports:
+       - "8080:8080"
+    networks:
+     - inception_network
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    restart: always
 
 networks:
   inception_network:
