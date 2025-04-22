@@ -51,6 +51,7 @@ if [ ! -f /var/www/html/wp-config.php ]; then
         --admin_password="$ADMIN_PASSWORD" \
         --admin_email="$ADMIN_EMAIL" \
         --skip-email
+    wp user create $WP_USER $WP_USER_MAIL --role=author --user_pass=$WP_USER_PASS --allow-root
 else
     echo "wp-config.php already exists. Skipping creation."
 fi
